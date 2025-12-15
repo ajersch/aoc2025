@@ -131,7 +131,44 @@ d7 ← {
 
 
 
+ d11←{
+    ⍝ vector of node name, neighbours
+    i←':'(≠⊆⊢)¨⊃⎕NGET⍵1
 
+    ⍝ names of all the nodes
+    n←⊃¨i
+    n←n,⊂'out'
+
+    ⍝ adjacency matrix
+    a←↑↑{∨⌿{∨/⍵⍷↑n}¨' '(≠⊆⊢)2⊃⍵}¨i
+    a←a⍪0
+
+    ⍝ generates ⍵ powers of ⍺
+    ⍝ needed since scan was too slow to generate all matrices
+    p←{
+        0=⍵:⍺
+        m←⍺,⍨⊂a+.×⊃⍺
+        m∇⍵-1
+    }
+
+    ⍝ powers of adjacency matrix give number of walks
+    ⍝ sum of walks of length 1 to 100 gives number of paths
+    w←↑+⌿(⊂a)p 100
+
+    ⍝ indices of important nodes
+    you←n⍳⊂'you'
+    svr←n⍳⊂'svr'
+    dac←n⍳⊂'dac'
+    fft←n⍳⊂'fft'
+    out←n⍳⊂'out'
+
+    ⍝ paths from you→out
+    p1←w[you;out]
+    ⍝ paths from svr→fft times paths from fft→dac times paths from dac→out
+    p2←w[svr;fft]×w[fft;dac]×w[dac;out]
+
+    p1,p2
+ }
 
 d12 ← {
     ⍝ drop first 30 lines since shapes don't matter
