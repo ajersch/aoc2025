@@ -92,6 +92,61 @@ d5 ← {
     p1,p2
 }
 
+d6 ← {
+    i←⊃⎕NGET⍵1
+    ⍝ numbers for part 1
+    n←↑⍎¨¯1↓i
+    ⍝ operations
+    o←⊃¯1↑i
+    o←o⌿⍨~' '=o
+    ⍝ reduce over each column with proper operation
+    c←+⌿{⊃⍵='*':×⌿1↓⍵~0 ⋄ +⌿1↓⍵~0}⍤1
+    p1←c⍉o⍪n
+
+    ⍝ operations
+    o←⊃¯1↑i
+    ⍝ partition vertical numbers by operation
+    n←(↓⍉↑¯1↓i)⊂⍨~' '=o
+    ⍝ convert non-empty entries into numbers
+    n←{⍎¨⍵⌿⍨~∧⌿¨' '=⍵}¨n
+    ⍝ remove whitespace from operations
+    o←o⌿⍨~' '=o
+    ⍝ same computation as part 1
+    p2←c o,↑n
+
+    p1,p2
+}
+
+d7 ← {
+    ⍝ remove empty lines and make input binary
+    i←'S^'∊⍨{↑⍵/⍨2|⍳≢⍵}⊃⎕NGET'7.in'1
+    ⍝ scan matrix multiplication of partial splits, take sign
+    ⍝ find splits and + reduce
+    p1←1++⌿2(+⌿⊣∧(~⊢))⌿×(i[1;]+.×⊢)¨+.×⍀{⍵(⌽∨(-⊣)⌽⊢)∘.=⍨⍳≢⍵}¨↓1↓i
+    ⍝ matrix multiplication for spilts
+    p2←+⌿↑({⍺(⊖∨(-⊣)⊖⊢)∘.=⍨⍳≢⍺}+.×⊢)⌿↓⊖i
+    p1,p2
+}
+
+
+
+
+
+
+d12 ← {
+    ⍝ drop first 30 lines since shapes don't matter
+    i←30↓⊃⎕NGET⍵1
+    ⍝ 7 × total number of presents
+    n←{7×+⌿⍎6↓⍵}¨i
+    ⍝ area of each region
+    s←×/↑{⍎¨'x'(≠⊆⊢)5↑⍵}¨i
+    ⍝ sum of regions that fit all presents
+    p1←+⌿s>n
+
+    p1, 'no part 2'
+}
+
+
 run ← 'd1 ''1.in''' 'd2 ''2.in''' 'd3 ''3.in''' 'd4 ''4.in''' 'd5 ''5a.in'' ''5b.in'''
 'cmpx' ⎕CY 'dfns'
 cmpx run
