@@ -128,7 +128,40 @@ d7 ← {
     p1,p2
 }
 
+d8 ← {
+    i←⍎¨⊃⎕NGET⍵1
+    ⍝ distances
+    d←0~⍨∪⊃,⌿↓∘.(+.{2*⍨⍺-⍵})⍨i
+    ⍝ pairs of nodes
+    p←0~⍨∪⊃,⌿↓∘.{⍺=⍵:0⋄(⌊⌿,⌈⌿)⍺,⍵}⍨⍳≢i
+    ⍝ indices of sorted distances
+    s←⍋d
+    ⍝ groups of nodes, starts with one node in each group
+    g←⍳≢i
+   
+    ⍝ takes the union of the sets joined by ⍺
+    u←{m←⍺ ⋄ ∪∪⌿@((∨⌿m∘∊)¨)⍵}
+    
+    ⍝ join two nodes with a wire once
+    ⍝ takes (index, groups) as input
+    j←{
+        index←⊃⍵
+        groups←1↓⍵
+        (index+1),(p⊃⍨index⊃s)u groups
+    }
 
+    ⍝ sizes of groups after making 1000 connections
+    sizes←≢¨j⍣1000⊢1,g
+    ⍝ sort sizes and multiply top three
+    p1←×⌿3↑sizes[⍒sizes]
+    
+    ⍝ index of last connection to be made
+    last←1-⍨⊃j⍣{2=≢⍺}⊢1,g
+    ⍝ product of X coordinate of endpoints of last connection
+    p2←⊃⊃×⌿{⍵⊃i}¨p⊃⍨last⊃s
+
+    p1,p2
+}
 
 
  d11←{
