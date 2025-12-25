@@ -163,8 +163,18 @@ d8 ← {
     p1,p2
 }
 
+d9 ← {
+     i←{⍎¨','(≠⊆⊢)⍵}¨⊃⎕NGET⍵1
+     ⍝ area calculation
+     a←{×⌿1+|⍺-⍵}
 
- d11←{
+     ⍝ maximum area of all possible rectangles
+     p1←⌈⌿⌈⌿∘.a⍨i
+     p1, 'no part 2'
+}
+
+
+ d11 ← {
     ⍝ vector of node name, neighbours
     i←':'(≠⊆⊢)¨⊃⎕NGET⍵1
 
@@ -215,8 +225,3 @@ d12 ← {
 
     p1, 'no part 2'
 }
-
-
-run ← 'd1 ''1.in''' 'd2 ''2.in''' 'd3 ''3.in''' 'd4 ''4.in''' 'd5 ''5a.in'' ''5b.in'''
-'cmpx' ⎕CY 'dfns'
-cmpx run
